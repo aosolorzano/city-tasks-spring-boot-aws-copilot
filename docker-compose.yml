@@ -1,0 +1,48 @@
+version: '3.9'
+
+networks:
+  tasks-network:
+    driver: bridge
+
+services:
+  tasks-postgres:
+    image: postgres:14.4
+    container_name: tasks-postgres
+    environment:
+      - POSTGRES_DB=CityTasksDB
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres123
+    ports:
+      - "5432:5432"
+    networks:
+      - tasks-network
+
+  tasks-localstack:
+    image: localstack/localstack:latest
+    container_name: tasks-localstack
+    env_file:
+      - utils/docker/compose/localstack-dev.env
+    ports:
+      - "4566:4566"
+    volumes:
+      - ./utils/docker/dynamodb/items/devices.json:/var/lib/localstack/devices.json
+      - ./utils/docker/dynamodb/scripts/create-resources.sh:/etc/localstack/init/ready.d/create-resources.sh
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - tasks-network
+
+  tasks-api:
+    image: aosolorzano/city-tasks-api:1.5.0
+    container_name: city-tasks-api
+    build:
+      context: .
+      dockerfile: Dockerfile-native
+    env_file:
+      - utils/docker/compose/api-dev.env
+    depends_on:
+      - tasks-postgres
+      - tasks-localstack
+    ports:
+      - "8080:8080"
+    networks:
+      - tasks-network

@@ -1,0 +1,23 @@
+#####################################################################################
+########################## Stage 1: Docker Builder Image ############################
+#####################################################################################
+FROM ghcr.io/graalvm/graalvm-ce:ol9-java17-22.3.1 AS builder
+RUN gu install native-image
+
+COPY .mvn     /workspace/app/.mvn
+COPY mvnw     /workspace/app/mvnw
+COPY pom.xml  /workspace/app/pom.xml
+COPY src      /workspace/app/src
+
+WORKDIR /workspace/app
+RUN ./mvnw -B org.apache.maven.plugins:maven-dependency-plugin:3.1.2:go-offline && \
+    ./mvnw clean native:compile -Pnative -DskipTests
+
+#####################################################################################
+#################### Stage 2: Docker Native Application Image #######################
+#####################################################################################
+FROM oraclelinux:9-slim
+COPY --from=builder /workspace/app/target/city-tasks-spring-boot-aws-copilot application
+
+EXPOSE 8080
+CMD ["sh", "-c", "./application"]
