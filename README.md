@@ -18,7 +18,12 @@ All test cases using the TDD methodology from the beginning of the development p
 This project also uses Docker Compose to deploy a local cluster alongside the other required services by the Spring Boot application.
 
 ## Running Locally - Docker Compose.
-Only need to execute the following command from the project's root folder:
+Execute the following command to get your Cognito User Pool ID:
+```bash
+aws cognito-idp list-user-pools --max-results 10
+```
+Then, modify the `utils/docker/compose/tasks-api-dev.env` file and replace the `<cognito_user_pool_id>` with the corresponding one.
+Now, you can execute the following command from the project's root directory to deploy the Docker cluster locally:
 ```bash
 docker compose up --build
 ```
