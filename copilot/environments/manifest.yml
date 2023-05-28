@@ -19,7 +19,7 @@ network:
 http:
   public:
     access_logs:
-      bucket_name: city-tasks-alb-dev
+      bucket_name: s3_bucket_name
       prefix: access-logs
 
 # Observability configuration for environment resources.

@@ -40,6 +40,7 @@ docker compose up tasks-postgres tasks-localstack
 
 Open a new terminal window and export the following environment variables:
 ```bash
+export SPRING_PROFILES_ACTIVE=dev
 export CITY_TASKS_DB_CLUSTER_SECRET='{"dbClusterIdentifier":"hiperium-city-tasks-db-cluster","password":"postgres123","dbname":"CityTasksDB","engine":"postgres","port":5432,"host":"localhost","username":"postgres"}'
 export CITY_IDP_ENDPOINT='https://cognito-idp.us-east-1.amazonaws.com/us-east-1_Fbsb1nVMt'
 export CITY_TASKS_TIME_ZONE='-05:00'

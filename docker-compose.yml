@@ -38,7 +38,7 @@ services:
       context: .
       dockerfile: Dockerfile-native
     env_file:
-      - utils/docker/compose/api-dev.env
+      - utils/docker/compose/tasks-api-dev.env
     depends_on:
       - tasks-postgres
       - tasks-localstack

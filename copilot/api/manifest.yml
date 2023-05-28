@@ -1,7 +1,9 @@
-# The manifest for the "tasks-api" service.
+# The manifest for the "api" service.
 # Read the full specification for the "Load Balanced Web Service" type at:
-#  https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/
-name: tasks-api
+# https://aws.github.io/copilot-cli/docs/manifest/lb-web-service/
+
+# Your service name will be used in naming your resources like log groups, ECS services, etc.
+name: api
 type: Load Balanced Web Service
 
 # Docker Build Arguments.
@@ -12,7 +14,7 @@ image:
 # ECS Task Definition.
 cpu: 256
 memory: 512
-platform: linux/arm64
+platform: linux/arm64   # See https://aws.github.io/copilot-cli/docs/manifest/backend-service/#platform
 
 # Enable running commands in your container.
 exec: true
@@ -23,12 +25,12 @@ count:
   cooldown:
     in: 30s
     out: 60s
-  cpu_percentage: 70
-  memory_percentage: 80
+  cpu_percentage: 80
+  memory_percentage: 85
 
 # Application Load Balancer.
 http:
-  path: '/api/*'
+  path: 'api/task*'
   healthcheck:
     path: '/actuator/health'
     port: 8080
@@ -53,14 +55,12 @@ network:
 # Environment Variables.
 variables:
   CITY_TASKS_TIME_ZONE: -05:00
-  CITY_IDP_ENDPOINT: https://cognito-idp.aws_region.amazonaws.com/us-east-1_Fbsb1nVMt
+  CITY_IDP_ENDPOINT: https://cognito-idp.aws_idp_region.amazonaws.com/user_pool_id
 
 # Override any value above based on the deployment environment.
 environments:
   dev:
-    image:
-      build:
-        args:
-          spring_profile: dev
+    variables:
+      SPRING_PROFILES_ACTIVE: dev
     deployment:
       rolling: 'recreate'
