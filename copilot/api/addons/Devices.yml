@@ -15,7 +15,7 @@ Resources:
       'aws:copilot:description': 'An Amazon DynamoDB table for Devices'
     Type: AWS::DynamoDB::Table
     Properties:
-      TableName: !Sub ${App}-${Env}-${Name}-devices
+      TableName: Devices
       AttributeDefinitions:
         - AttributeName: id
           AttributeType: "S"
