@@ -5,7 +5,7 @@
 * **Level**: Advanced.
 * **Technologies**: Java 17, Spring Boot 3, Spring Native, Spring WebFlux, Spring OAuth2, Quartz, Flyway, AWS Copilot CLI, Testcontainers, Aurora Postgres, DynamoDB, Elastic Load Balancer (ELB), and Docker.
 
-You can read the full article on my [Medium Blog](https://aosolorzano.medium.com/oauth2-in-spring-boot-native-reactive-microservice-with-amazon-cognito-as-oidc-service-c454d84a5234) for more details.
+You can read the full article on my [Medium Blog](https://aosolorzano.medium.com/spring-boot-native-microservice-on-ecs-fargate-using-aws-copilot-cli-for-cross-account-deployment-73b1836f21f7) for more details.
 
 ## Description.
 This project uses the Spring Boot Framework to manage Quartz Jobs in a Spring Native microservice with the use of reactive programing using Spring WebFlux.
@@ -15,7 +15,7 @@ To perform these activities, the users must be logged into the OIDC Service that
 All test cases using the TDD methodology from the beginning of the development phase, and only Integration Tests are executed with the support of Testcontainers because Unit Testing does not cover real world scenarios.
 This project also uses Docker Compose to deploy a local cluster alongside the other required services by the Spring Boot application.
 
-## Running using Docker Compose.
+## Running Locally - Docker Compose.
 Only need to execute the following command from the project's root folder:
 ```bash
 docker compose up --build
@@ -29,7 +29,7 @@ aws dynamodb scan         \
   --endpoint-url http://localhost:4566
 ```
 
-## Running using the Native Executable.
+## Running Locally - Native Executable.
 Use this option if you want to explore more features such as running your tests in a native image.
 *IMPORTANT:* The GraalVM `native-image` compiler should be installed and configured on your machine.
 
@@ -55,7 +55,55 @@ Then, create and run the native executable from the project's root directory:
 $ ./mvnw clean native:compile -Pnative spring-boot:run
 ```
 
-## Reference Documentation.
+## Deploying into AWS - Bash Scripts.
+Use the following script to deploy the application into AWS:
+```bash
+./run-scripts.sh
+```
+This script shows a menu with the following options:
+
+![](utils/docs/images/bash_script_main_menu.png)
+
+Choose option 1 to deploy the application into AWS. You don't need to have exported the environment variables because the script will ask you for them:
+
+![](utils/docs/images/bash_script_entering_variables.png)
+
+### AWS Copilot CLI - Helpful Commands.
+List all of your AWS Copilot applications.
+```
+copilot app ls
+```
+Show information about the environments and services in your application.
+```
+copilot app show
+```
+Show information about your environments.
+```
+copilot env ls
+```
+Show information about the service, including endpoints, capacity and related resources.
+```
+copilot svc show
+```
+List of all the services in an application.
+```
+copilot svc ls
+```
+Show logs of a deployed service.
+```
+copilot svc logs --app city-tasks --name api --env dev --since 1h --follow
+```
+Show service status.
+```
+copilot svc status
+```
+To delete and clean-up all created resources.
+```
+copilot app delete --yes
+```
+
+
+## Spring Boot - Reference Documentation.
 For further reference, please consider the following sections:
 
 * [Official Apache Maven documentation](https://maven.apache.org/guides/index.html)
