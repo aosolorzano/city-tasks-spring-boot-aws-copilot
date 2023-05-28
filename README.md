@@ -5,6 +5,8 @@
 * **Level**: Advanced.
 * **Technologies**: Java 17, Spring Boot 3, Spring Native, Spring WebFlux, Spring OAuth2, Quartz, Flyway, AWS Copilot CLI, Testcontainers, Aurora Postgres, DynamoDB, Elastic Load Balancer (ELB), and Docker.
 
+![](utils/docs/images/solution_architecture.png)
+
 You can read the full article on my [Medium Blog](https://aosolorzano.medium.com/spring-boot-native-microservice-on-ecs-fargate-using-aws-copilot-cli-for-cross-account-deployment-73b1836f21f7) for more details.
 
 ## Description.
